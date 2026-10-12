@@ -159,15 +159,17 @@
   <div class="egg-wrap" id="eggWrap" role="button" aria-label="Tocá el huevo">
     <svg class="egg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="shell" cx="35%" cy="28%" r="85%">
-          <stop offset="0" stop-color="#fff6e6"/><stop offset=".55" stop-color="#f1d5a8"/><stop offset="1" stop-color="#c9975a"/>
+        <radialGradient id="shell" cx="35%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#fffdf5"/><stop offset=".6" stop-color="#ffe9b8"/><stop offset="1" stop-color="#f3c36b"/>
         </radialGradient>
       </defs>
       <path d="M100 8C150 8 188 100 188 158c0 50-38 84-88 84S12 208 12 158C12 100 50 8 100 8Z" fill="url(#shell)" stroke="#1b0f3a" stroke-width="6"/>
-      <ellipse cx="66" cy="72" rx="14" ry="30" fill="#fff" opacity=".55" transform="rotate(22 66 72)"/>
-      <g fill="#a9763f" opacity=".28">
-        <circle cx="120" cy="90" r="2.5"/><circle cx="140" cy="130" r="2"/><circle cx="96" cy="150" r="2.5"/><circle cx="130" cy="185" r="2"/><circle cx="70" cy="190" r="2.5"/><circle cx="60" cy="140" r="2"/><circle cx="108" cy="215" r="2"/>
-      </g>
+      <ellipse cx="62" cy="70" rx="14" ry="26" fill="#fff" opacity=".7" transform="rotate(25 62 70)"/>
+      <!-- eyes -->
+      <g id="eyeL"><circle cx="70" cy="130" r="22" fill="#fff" stroke="#1b0f3a" stroke-width="5"/><circle class="pupil" cx="70" cy="130" r="9" fill="#1b0f3a"/></g>
+      <g id="eyeR"><circle cx="130" cy="130" r="22" fill="#fff" stroke="#1b0f3a" stroke-width="5"/><circle class="pupil" cx="130" cy="130" r="9" fill="#1b0f3a"/></g>
+      <path d="M72 180Q100 208 128 180" fill="none" stroke="#1b0f3a" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="48" cy="170" r="10" fill="#ff3d9a" opacity=".5"/><circle cx="152" cy="170" r="10" fill="#ff3d9a" opacity=".5"/>
       <path class="crack" d="M20 100 L52 84 L68 108 L96 80 L118 106 L146 78 L170 98" fill="none" stroke="#1b0f3a" stroke-width="6" stroke-linejoin="round"/>
     </svg>
   </div>
@@ -312,7 +314,17 @@ function rain(n = 14){
   }
 }
 
-// egg: click to crack
+// egg: eyes follow cursor + click to crack
+const pupils = [...document.querySelectorAll(".pupil")];
+function look(x, y){
+  const r = eggWrap.getBoundingClientRect();
+  const cx = r.left + r.width/2, cy = r.top + r.height*.55;
+  const a = Math.atan2(y - cy, x - cx), d = Math.min(10, Math.hypot(x-cx, y-cy)/20);
+  pupils.forEach(p => p.setAttribute("transform", `translate(${Math.cos(a)*d} ${Math.sin(a)*d})`));
+}
+addEventListener("pointermove", e => look(e.clientX, e.clientY));
+addEventListener("touchmove", e => look(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+
 const crack = document.querySelector(".crack");
 let taps = 0;
 eggWrap.onclick = () => {
