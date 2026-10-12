@@ -234,16 +234,16 @@ const DISCOUNT_CODE = "PIMAVI10";   // código que aparece al romper el huevo
 const DISCOUNT = 0.10;               // 10%
 // Todos los precios incluyen envío. Si un producto no tiene opciones, no se muestra.
 const PRODUCTS = [
-  { id:"super", name:"Huevos súper", emoji:"🐣",
-    options:[
-      {label:"3 maples",            short:"3 maples",  price:20000},
-      {label:"6 maples",            short:"6 maples",  price:36000},
-      {label:"Cajón (12 maples)",   short:"Cajón 12",  price:68000} ] },
-  { id:"extra", name:"Huevos extra", emoji:"🐔",
+  { id:"extra", name:"Huevos extra", emoji:"🐔", info:"Maple de 30 huevos · pesa 1,9 kg",
     options:[
       {label:"3 maples",            short:"3 maples",  price:18000},
       {label:"6 maples",            short:"6 maples",  price:32000},
       {label:"Cajón (12 maples)",   short:"Cajón 12",  price:60000} ] },
+  { id:"super", name:"Huevos súper", emoji:"🐣", info:"Maple de 30 huevos · pesa 2,1 kg",
+    options:[
+      {label:"3 maples",            short:"3 maples",  price:20000},
+      {label:"6 maples",            short:"6 maples",  price:36000},
+      {label:"Cajón (12 maples)",   short:"Cajón 12",  price:68000} ] }
 ].filter(p => p.options.length);
 /* ==================================================================== */
 
@@ -265,7 +265,7 @@ PRODUCTS.forEach(p => {
     <span class="fry"><i></i></span>
     <span class="emoji">${p.emoji}</span>
     <h3>${p.name}</h3>
-    <div class="unit">Elegí cuánto llevar</div>
+    <div class="unit">${p.info}</div>
     <div class="opts" style="margin-top:10px">${p.options.map((o,i)=>`<button data-i="${i}" class="${i===0?'on':''}">${o.short}</button>`).join("")}</div>
     <div class="price"><span data-price>${fmt(p.options[0].price)}</span> <small>🚚 envío incluido</small></div>
     <div class="qty">
